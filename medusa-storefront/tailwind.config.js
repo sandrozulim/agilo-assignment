@@ -1,5 +1,3 @@
-const path = require("path")
-
 module.exports = {
   darkMode: "class",
   presets: [require("@medusajs/ui-preset")],
@@ -21,18 +19,20 @@ module.exports = {
         padding: "padding-top padding-right padding-bottom padding-left",
       },
       colors: {
+        black: "#050505",
+        white: "#FDFDFD",
         grey: {
-          0: "#FFFFFF",
-          5: "#F9FAFB",
-          10: "#F3F4F6",
-          20: "#E5E7EB",
-          30: "#D1D5DB",
-          40: "#9CA3AF",
-          50: "#6B7280",
-          60: "#4B5563",
-          70: "#374151",
-          80: "#1F2937",
-          90: "#111827",
+          20: "#FBFBFB",
+          30: "#F8F8F9",
+          50: "#F4F4F4",
+          100: "#E7E7E7",
+          200: "#D1D1D1",
+          300: "#BBBBBB",
+          400: "#A3A3A3",
+          500: "#808080",
+          600: "#545457",
+          700: "#3A3A3B",
+          800: "#1F1F20",
         },
       },
       borderRadius: {
@@ -56,8 +56,16 @@ module.exports = {
         "2xlarge": "1920px",
       },
       fontSize: {
-        "3xl": "2rem",
+        "4xl": ["3.5rem", 1.4],
+        "3xl": ["3rem", 1.4],
+        "2xl": ["2.5rem", 1.4],
+        xl: ["2rem", 1.4],
+        lg: ["1.5rem", 1.4],
+        base: ["1rem", 1.4],
+        sm: ["0.875rem", 1.4],
+        xs: ["0.75rem", 1.4],
       },
+
       fontFamily: {
         sans: [
           "Inter",
