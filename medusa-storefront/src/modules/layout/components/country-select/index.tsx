@@ -7,13 +7,15 @@ import {
   ListboxOptions,
   Transition,
 } from "@headlessui/react"
-import { Fragment, useEffect, useMemo, useState } from "react"
 import ReactCountryFlag from "react-country-flag"
 
 import { StateType } from "@lib/hooks/use-toggle-state"
+import { Fragment, useEffect, useMemo, useState } from "react"
 import { useParams, usePathname } from "next/navigation"
 import { updateRegion } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
+import ChevronDown from "@modules/common/icons/chevron-down"
+import { clx } from "@medusajs/ui"
 
 type CountryOption = {
   country: string
@@ -26,7 +28,7 @@ type CountrySelectProps = {
   regions: HttpTypes.StoreRegion[]
 }
 
-const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
+export const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
   const [current, setCurrent] = useState<
     | { country: string | undefined; region: string; label: string | undefined }
     | undefined
@@ -132,4 +134,71 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
   )
 }
 
-export default CountrySelect
+type CountrySwitcherProps = {
+  regions: HttpTypes.StoreRegion[]
+}
+
+export function CountrySwitcher({ regions }: CountrySwitcherProps) {
+  const [isOpen, setIsOpen] = useState(false)
+  const { countryCode } = useParams()
+  const currentPath = usePathname().split(`/${countryCode}`)[1]
+
+  const countryOptions = useMemo(() => {
+    return regions
+      .flatMap((r) =>
+        (r.countries ?? []).map((c) => ({
+          country: c.iso_2,
+          region: r.id,
+          label: c.display_name,
+        }))
+      )
+      .sort((a, b) => (a?.label ?? "").localeCompare(b?.label ?? ""))
+  }, [regions])
+
+  const selectedOption = countryOptions.find((o) => o.country === countryCode)
+
+  //TODO - focus management and keyboard nav
+
+  return (
+    <div>
+      <button
+        className="text-base text-black flex gap-0.5"
+        aria-expanded={isOpen}
+        aria-controls="country-options"
+        aria-haspopup="listbox"
+        onClick={() => setIsOpen((prev) => !prev)}
+      >
+        <span className="uppercase inline-block w-6 items-center">
+          {selectedOption?.country ?? ""}
+        </span>
+        <ChevronDown />
+      </button>
+
+      {isOpen && (
+        <ul
+          className="absolute top-[calc(100%+1rem)] right-0 bg-white rounded-base border border-grey-200 max-h-[198px] overflow-y-scroll min-w-[243px] z-50"
+          id="country-options"
+          role="listbox"
+        >
+          {countryOptions.map((o) => (
+            <li
+              key={o.country}
+              className={clx(
+                "p-4 text-base hover:bg-grey-50 hover:cursor-pointer",
+                {
+                  "font-semibold": o.country === selectedOption?.country,
+                }
+              )}
+              onClick={() => updateRegion(o.country || "", currentPath)}
+              tabIndex={-1}
+              role="option"
+              aria-selected={o.country === selectedOption?.country}
+            >
+              {o.label}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}

@@ -3,7 +3,7 @@ import React from "react"
 import { IconProps } from "types/icon"
 
 const ChevronDown: React.FC<IconProps> = ({
-  size = "16",
+  size = "24",
   color = "currentColor",
   ...attributes
 }) => {
@@ -11,17 +11,16 @@ const ChevronDown: React.FC<IconProps> = ({
     <svg
       width={size}
       height={size}
-      viewBox="0 0 16 16"
+      viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...attributes}
     >
       <path
-        d="M4 6L8 10L12 6"
-        stroke={color}
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M5.46973 9.26525L6.53039 8.20459L12.0001 13.6743L17.4697 8.20459L18.5304 9.26525L12.0001 15.7956L5.46973 9.26525Z"
+        fill={color}
       />
     </svg>
   )
