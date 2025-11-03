@@ -6,8 +6,9 @@ import { Text, clx, useToggleState } from "@medusajs/ui"
 import { Fragment } from "react"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import CountrySelect from "../country-select"
+import { CountrySelect } from "../country-select"
 import { HttpTypes } from "@medusajs/types"
+import MenuIcon from "@modules/common/icons/menu"
 
 const SideMenuItems = {
   Home: "/",
@@ -20,7 +21,7 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
   const toggleState = useToggleState()
 
   return (
-    <div className="h-full">
+    <div className="h-full md:hidden">
       <div className="flex items-center h-full">
         <Popover className="h-full flex">
           {({ open, close }) => (
@@ -30,7 +31,9 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
                   data-testid="nav-menu-button"
                   className="relative h-full flex items-center transition-all ease-out duration-200 focus:outline-none hover:text-ui-fg-base"
                 >
-                  Menu
+                  <div aria-label="Open menu">
+                    <MenuIcon />
+                  </div>
                 </Popover.Button>
               </div>
 
