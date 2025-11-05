@@ -1,6 +1,6 @@
 import { IconProps } from "types/icon"
 
-export default function ArrowLeftIcon({
+export default function ArrowRightIcon({
   size = "24",
   color = "currentColor",
   ...attributes

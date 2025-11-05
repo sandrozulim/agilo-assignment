@@ -6,6 +6,7 @@ import { HttpTypes } from "@medusajs/types"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import { getAuthHeaders, getCacheOptions } from "./cookies"
 import { getRegion, retrieveRegion } from "./regions"
+import next from "next"
 
 export const listProducts = async ({
   pageParam = 1,
@@ -133,4 +134,22 @@ export const listProductsWithSort = async ({
     nextPage,
     queryParams,
   }
+}
+
+export const getProductByHandle = async function (
+  handle: string,
+  regionId: string
+) {
+  const { products } = await sdk.store.product.list(
+    {
+      handle,
+      region_id: regionId,
+      fields: "*variants.calculated_price,+variants.inventory_quantity",
+    },
+    {
+      next: { tags: ["products"] },
+    }
+  )
+
+  return products[0]
 }

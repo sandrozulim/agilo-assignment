@@ -12,9 +12,15 @@ type CarouselProps = {
   children: React.ReactNode
   options?: EmblaOptionsType
   controls?: "paginated" | "arrows"
+  slideClassName?: string
 }
 
-const Carousel: React.FC<CarouselProps> = ({ children, options, controls }) => {
+const Carousel: React.FC<CarouselProps> = ({
+  children,
+  options,
+  controls,
+  slideClassName,
+}) => {
   const [emblaRef, emblaApi] = useEmblaCarousel(options)
   const [canScrollPrev, setCanScrollPrev] = useState(false)
   const [canScrollNext, setCanScrollNext] = useState(false)
@@ -50,11 +56,14 @@ const Carousel: React.FC<CarouselProps> = ({ children, options, controls }) => {
   }, [emblaApi])
 
   return (
-    <div className="relative">
-      <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex">
+    <div className="relative w-full h-full">
+      <div className="overflow-hidden h-full" ref={emblaRef}>
+        <div className="flex h-full">
           {React.Children.map(children, (child, index) => (
-            <div className="flex-[0_0_100%] min-w-0" key={index}>
+            <div
+              className={twMerge("flex-[0_0_100%] min-w-0", slideClassName)}
+              key={index}
+            >
               {child}
             </div>
           ))}
