@@ -1,8 +1,9 @@
 import { HttpTypes } from "@medusajs/types"
 import { clx } from "@medusajs/ui"
-import React from "react"
+import ChevronDown from "@modules/common/icons/chevron-down"
+import React, { useState } from "react"
 
-type OptionSelectProps = {
+type Props = {
   option: HttpTypes.StoreProductOption
   current: string | undefined
   updateOption: (title: string, value: string) => void
@@ -11,46 +12,68 @@ type OptionSelectProps = {
   "data-testid"?: string
 }
 
-const OptionSelect: React.FC<OptionSelectProps> = ({
+export default function OptionSelect({
   option,
   current,
   updateOption,
   title,
   "data-testid": dataTestId,
   disabled,
-}) => {
-  const filteredOptions = (option.values ?? []).map((v) => v.value)
+}: Props) {
+  const [isOpen, setIsOpen] = useState(false)
+
+  function handleOptionClick(value: string) {
+    updateOption(option.id, value)
+    setIsOpen(false)
+  }
 
   return (
-    <div className="flex flex-col gap-y-3">
-      <span className="text-sm">Select {title}</span>
-      <div
-        className="flex flex-wrap justify-between gap-2"
-        data-testid={dataTestId}
-      >
-        {filteredOptions.map((v) => {
-          return (
-            <button
-              onClick={() => updateOption(option.id, v)}
-              key={v}
-              className={clx(
-                "border-ui-border-base bg-ui-bg-subtle border text-small-regular h-10 rounded-rounded p-2 flex-1 ",
-                {
-                  "border-ui-border-interactive": v === current,
-                  "hover:shadow-elevation-card-rest transition-shadow ease-in-out duration-150":
-                    v !== current,
-                }
-              )}
-              disabled={disabled}
-              data-testid="option-button"
-            >
-              {v}
-            </button>
-          )
-        })}
+    <div className="md:max-w-[243px]">
+      <div className="flex items-center gap-6 ">
+        <span className="text-base text-black">{title}</span>
+        {current && <span className="text-grey-500 capitalize">{current}</span>}
+      </div>
+      <div className="relative mt-4">
+        <button
+          className="relative text-base text-black flex gap-0.5 border border-grey-200 rounded-base px-4 py-3 w-full"
+          aria-expanded={isOpen}
+          aria-controls={`${option.title}-options`}
+          aria-haspopup="listbox"
+          onClick={() => setIsOpen((prev) => !prev)}
+        >
+          <span>{current || `Choose ${option.title}`}</span>
+          <div className="absolute right-4">
+            <ChevronDown />
+          </div>
+        </button>
+        {isOpen && (
+          <div
+            className="absolute top-[calc(100%+0.4rem)] w-full bg-white rounded-base border border-grey-200 max-h-[198px] overflow-y-scroll z-50"
+            id={`${option.title}-options`}
+            role="listbox"
+          >
+            {option.values?.map((o) => (
+              <button
+                className={clx(
+                  "block p-4 text-base hover:bg-grey-50 hover:cursor-pointer w-full text-left",
+                  {
+                    "font-semibold": o.value === current,
+                  }
+                )}
+                key={o.id}
+                onClick={() => handleOptionClick(o.value)}
+                tabIndex={-1}
+                role="option"
+                aria-selected={o.value === current}
+                data-testid="option-button"
+                disabled={disabled}
+              >
+                {o.value}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
 }
-
-export default OptionSelect
