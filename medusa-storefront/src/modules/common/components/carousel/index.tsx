@@ -11,14 +11,12 @@ import ArrowRightIcon from "@modules/common/icons/arrow-right"
 type CarouselProps = {
   children: React.ReactNode
   options?: EmblaOptionsType
-  controls?: "paginated" | "arrows"
   slideClassName?: string
 }
 
 const Carousel: React.FC<CarouselProps> = ({
   children,
   options,
-  controls,
   slideClassName,
 }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel(options)
@@ -71,57 +69,53 @@ const Carousel: React.FC<CarouselProps> = ({
       </div>
 
       {/* Arrow navigation */}
-      {controls === "arrows" && (
-        <>
-          <button
-            className={twMerge(
-              "absolute top-1/2 translate-y-1/2 left-6 rounded-full p-2 border border-black",
-              canScrollPrev
-                ? "bg-black text-white"
-                : "bg-transparent text-black cursor-default"
-            )}
-            onClick={scrollPrev}
-            disabled={!canScrollPrev}
-          >
-            <ArrowLeftIcon aria-label="Scroll previous slide" />
-          </button>
-          <button
-            className={twMerge(
-              "absolute top-1/2 translate-y-1/2 right-6 rounded-full p-2 border border-black",
-              canScrollNext
-                ? "bg-black text-white"
-                : "bg-transparent text-black cursor-default"
-            )}
-            onClick={scrollNext}
-            disabled={!canScrollNext}
-          >
-            <ArrowRightIcon aria-label="Scroll next slide" />
-          </button>
-        </>
-      )}
+      <>
+        <button
+          className={twMerge(
+            "absolute top-1/2 translate-y-1/2 left-6 rounded-full p-2 border border-black max-lg:hidden",
+            canScrollPrev
+              ? "bg-black text-white"
+              : "bg-transparent text-black cursor-default"
+          )}
+          onClick={scrollPrev}
+          disabled={!canScrollPrev}
+        >
+          <ArrowLeftIcon aria-label="Scroll previous slide" />
+        </button>
+        <button
+          className={twMerge(
+            "absolute top-1/2 translate-y-1/2 right-6 rounded-full p-2 border border-black max-lg:hidden",
+            canScrollNext
+              ? "bg-black text-white"
+              : "bg-transparent text-black cursor-default"
+          )}
+          onClick={scrollNext}
+          disabled={!canScrollNext}
+        >
+          <ArrowRightIcon aria-label="Scroll next slide" />
+        </button>
+      </>
 
       {/* Dot navigation */}
-      {controls === "paginated" && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex justify-center items-center">
-          {scrollSnaps.map((_, index) => (
-            <button
-              className={twMerge("text-black text-base px-1")}
-              key={index}
-              onClick={() => scrollTo(index)}
-              aria-label={`Go to slide ${index + 1}`}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex justify-center items-center lg:hidden">
+        {scrollSnaps.map((_, index) => (
+          <button
+            className={twMerge("text-black text-base px-1")}
+            key={index}
+            onClick={() => scrollTo(index)}
+            aria-label={`Go to slide ${index + 1}`}
+          >
+            <span
+              className={twMerge(
+                "px-1",
+                index === selectedIndex && "border-b border-black "
+              )}
             >
-              <span
-                className={twMerge(
-                  "px-1",
-                  index === selectedIndex && "border-b border-black "
-                )}
-              >
-                {index + 1}
-              </span>
-            </button>
-          ))}
-        </div>
-      )}
+              {index + 1}
+            </span>
+          </button>
+        ))}
+      </div>
     </div>
   )
 }

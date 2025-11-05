@@ -11,7 +11,6 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
     <>
       <Carousel
         options={{ containScroll: "trimSnaps", skipSnaps: true }}
-        controls="paginated"
         slideClassName="md:basis-[80%] mr-4 last:mr-0"
       >
         {images.map((img, i) => (
