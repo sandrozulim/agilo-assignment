@@ -6,6 +6,7 @@ import {
 } from "@medusajs/framework/utils";
 import {
   createApiKeysWorkflow,
+  createCollectionsWorkflow,
   createInventoryLevelsWorkflow,
   createProductCategoriesWorkflow,
   createProductsWorkflow,
@@ -382,185 +383,153 @@ export default async function seedDemoData({ container }: ExecArgs) {
     },
   });
 
+  const { result: collections } = await createCollectionsWorkflow(
+    container
+  ).run({
+    input: {
+      collections: [
+        {
+          title: "Modern Luxe",
+          handle: "modern-luxe",
+        },
+      ],
+    },
+  });
+
+  const modernLuxeCollectionId = collections[0].id;
+
   await createProductsWorkflow(container).run({
     input: {
       products: [
         {
-          title: "Medusa T-Shirt",
+          title: "Paloma Haven",
           category_ids: [
             categoryResult.find((cat) => cat.name === "Shirts")!.id,
           ],
+          collection_id: modernLuxeCollectionId,
           description:
-            "Reimagine the feeling of a classic T-shirt. With our cotton T-shirts, everyday essentials no longer have to be ordinary.",
-          handle: "t-shirt",
+            "Minimalistic designs, neutral colors, and high-quality textures. Perfect for those who seek comfort with a clean and understated aesthetic. This collection brings the essence of Scandinavian elegance to your living room.",
+          handle: "paloma-haven",
           weight: 400,
           status: ProductStatus.PUBLISHED,
           shipping_profile_id: shippingProfile.id,
           images: [
             {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/tee-black-front.png",
+              url: "http://localhost:9000/static/1762271785437-paloma-haven-1.webp",
             },
             {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/tee-black-back.png",
-            },
-            {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/tee-white-front.png",
-            },
-            {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/tee-white-back.png",
+              url: "http://localhost:9000/static/1762271785437-paloma-haven-2.webp",
             },
           ],
           options: [
             {
-              title: "Size",
-              values: ["S", "M", "L", "XL"],
+              title: "Materials",
+              values: ["boucle", "linen"],
             },
             {
               title: "Color",
-              values: ["Black", "White"],
+              values: ["brown", "beige", "gray", "black", "green"],
             },
           ],
           variants: [
             {
-              title: "S / Black",
-              sku: "SHIRT-S-BLACK",
+              title: "boucle / brown",
               options: {
-                Size: "S",
-                Color: "Black",
+                Materials: "boucle",
+                Color: "brown",
               },
               prices: [
                 {
-                  amount: 10,
+                  amount: 1200,
                   currency_code: "eur",
                 },
                 {
-                  amount: 15,
+                  amount: 1250,
                   currency_code: "usd",
                 },
               ],
             },
             {
-              title: "S / White",
-              sku: "SHIRT-S-WHITE",
+              title: "boucle / beige",
               options: {
-                Size: "S",
-                Color: "White",
+                Materials: "boucle",
+                Color: "beige",
               },
               prices: [
                 {
-                  amount: 10,
+                  amount: 1300,
                   currency_code: "eur",
                 },
                 {
-                  amount: 15,
+                  amount: 1300,
                   currency_code: "usd",
                 },
               ],
             },
             {
-              title: "M / Black",
-              sku: "SHIRT-M-BLACK",
+              title: "linen / brown",
               options: {
-                Size: "M",
-                Color: "Black",
+                Materials: "linen",
+                Color: "brown",
               },
               prices: [
                 {
-                  amount: 10,
+                  amount: 900,
                   currency_code: "eur",
                 },
                 {
-                  amount: 15,
+                  amount: 950,
                   currency_code: "usd",
                 },
               ],
             },
             {
-              title: "M / White",
-              sku: "SHIRT-M-WHITE",
+              title: "linen / beige",
               options: {
-                Size: "M",
-                Color: "White",
+                Materials: "linen",
+                Color: "beige",
               },
               prices: [
                 {
-                  amount: 10,
+                  amount: 900,
                   currency_code: "eur",
                 },
                 {
-                  amount: 15,
+                  amount: 950,
                   currency_code: "usd",
                 },
               ],
             },
             {
-              title: "L / Black",
-              sku: "SHIRT-L-BLACK",
+              title: "linen / black",
               options: {
-                Size: "L",
-                Color: "Black",
+                Materials: "linen",
+                Color: "black",
               },
               prices: [
                 {
-                  amount: 10,
+                  amount: 1000,
                   currency_code: "eur",
                 },
                 {
-                  amount: 15,
+                  amount: 1000,
                   currency_code: "usd",
                 },
               ],
             },
             {
-              title: "L / White",
-              sku: "SHIRT-L-WHITE",
+              title: "linen / gray",
               options: {
-                Size: "L",
-                Color: "White",
+                Materials: "linen",
+                Color: "gray",
               },
               prices: [
                 {
-                  amount: 10,
+                  amount: 1000,
                   currency_code: "eur",
                 },
                 {
-                  amount: 15,
-                  currency_code: "usd",
-                },
-              ],
-            },
-            {
-              title: "XL / Black",
-              sku: "SHIRT-XL-BLACK",
-              options: {
-                Size: "XL",
-                Color: "Black",
-              },
-              prices: [
-                {
-                  amount: 10,
-                  currency_code: "eur",
-                },
-                {
-                  amount: 15,
-                  currency_code: "usd",
-                },
-              ],
-            },
-            {
-              title: "XL / White",
-              sku: "SHIRT-XL-WHITE",
-              options: {
-                Size: "XL",
-                Color: "White",
-              },
-              prices: [
-                {
-                  amount: 10,
-                  currency_code: "eur",
-                },
-                {
-                  amount: 15,
+                  amount: 1000,
                   currency_code: "usd",
                 },
               ],

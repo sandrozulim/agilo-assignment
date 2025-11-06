@@ -15,15 +15,13 @@
 
 - yarn
 
-- npx medusa db:setup
+- `npx medusa db:setup`
+
+- yarn seed
 
 - yarn dev
 
-- visit http://localhost:9000/app/login and login with following credentials:
-  _email_: admin@medusajs.com
-  _password_: supersecret
-
-- Once inside Admin dashboard, navigate to **product** and click '**import**'. Import CSV file located in _agilo-assignment\medusa\src\scripts\1762376172118-product-exports.csv_.
+- Create new admin user `npx medusa user -e "admin@medusajs.com" -p "secret"` and login http://localhost:9000/app/login
 
 ## Storefront
 
@@ -53,4 +51,4 @@ The main focus of this project was to implement the **Product Details page**, in
 
 The most challenging part of this assignment was designing and organizing data flow for variant selection on the Product Details page. The goal was to make the variant controls maintainable and easy to understand, while following best practices.
 
-Additionally, adapting to the existing codebase required careful attention to avoid introducing any unwanted side effects, but there were no major roadblocks. The only roadblock I ran into was writing the seed script for initial product data. In the end, I went with the import/export CSV method to add products due to time constraints.
+Additionally, adapting to the existing codebase required careful attention to avoid introducing any unwanted side effects, but there were no major roadblocks. The only roadblock I ran into was writing the seed script for initial product data.
